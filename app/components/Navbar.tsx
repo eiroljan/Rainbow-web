@@ -2,11 +2,15 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLanguage } from "./LanguageContext";
+import { translations } from "../translations";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const pathname = usePathname();
+  const { lang, toggleLang } = useLanguage();
+  const t = translations.nav[lang];
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -15,10 +19,10 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/pricing", label: "Pricing" },
-    { href: "/download", label: "Download" },
+    { href: "/", label: t.home },
+    { href: "/about", label: t.about },
+    { href: "/pricing", label: t.pricing },
+    { href: "/download", label: t.download },
   ];
 
   return (
@@ -54,7 +58,7 @@ export default function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
-                id={`nav-${link.label.toLowerCase()}`}
+                id={`nav-${link.href.replace("/", "") || "home"}`}
                 className="no-underline transition-all duration-200"
                 style={{
                   color:
@@ -70,13 +74,27 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* CTA */}
+          {/* CTA + Language Toggle */}
           <div className="hidden md:flex items-center gap-3">
+            {/* Language toggle */}
+            <button
+              id="lang-toggle"
+              onClick={toggleLang}
+              className="px-3 py-2 rounded-lg text-xs font-bold transition-all duration-200"
+              style={{
+                background: "rgba(255,255,255,0.08)",
+                border: "1px solid rgba(255,255,255,0.12)",
+                color: "var(--text-secondary)",
+                cursor: "pointer",
+              }}
+            >
+              {lang === "en" ? "中文" : "EN"}
+            </button>
             <Link href="/pricing" className="btn-secondary" style={{ padding: "10px 22px", fontSize: "0.9rem" }} id="nav-get-started">
-              <span>Get Started</span>
+              <span>{t.getStarted}</span>
             </Link>
             <Link href="/download" className="btn-primary" style={{ padding: "10px 22px", fontSize: "0.9rem" }} id="nav-download">
-              <span>Download Free</span>
+              <span>{t.downloadFree}</span>
             </Link>
           </div>
 
@@ -132,12 +150,26 @@ export default function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              {/* Mobile language toggle */}
+              <button
+                onClick={() => { toggleLang(); setMobileOpen(false); }}
+                className="text-left"
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--text-secondary)",
+                  cursor: "pointer",
+                  fontWeight: 500,
+                }}
+              >
+                {lang === "en" ? "🌐 切换到中文" : "🌐 Switch to English"}
+              </button>
               <div className="flex flex-col gap-2 mt-2">
                 <Link href="/pricing" className="btn-secondary text-center" onClick={() => setMobileOpen(false)}>
-                  <span>Get Started</span>
+                  <span>{t.getStarted}</span>
                 </Link>
                 <Link href="/download" className="btn-primary text-center" onClick={() => setMobileOpen(false)}>
-                  <span>Download Free</span>
+                  <span>{t.downloadFree}</span>
                 </Link>
               </div>
             </div>

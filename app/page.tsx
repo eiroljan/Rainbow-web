@@ -4,80 +4,114 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-
-const features = [
-  {
-    icon: "🔒",
-    title: "Military-Grade Encryption",
-    desc: "AES-256 encryption keeps your data completely safe from hackers, ISPs, and surveillance agencies.",
-  },
-  {
-    icon: "⚡",
-    title: "Lightning Fast Speeds",
-    desc: "Our optimized servers ensure blazing-fast connections with zero bandwidth throttling.",
-  },
-  {
-    icon: "🌍",
-    title: "10,000+ Global Servers",
-    desc: "Connect from anywhere with servers in 100+ countries. Bypass geo-restrictions effortlessly.",
-  },
-  {
-    icon: "🛡️",
-    title: "No-Log Policy",
-    desc: "We never log, store, or share your personal data. Your privacy is our promise.",
-  },
-  {
-    icon: "🔌",
-    title: "Kill Switch",
-    desc: "Automatic kill switch cuts internet if VPN drops, ensuring your IP is never exposed.",
-  },
-  {
-    icon: "📱",
-    title: "Multi-Device Support",
-    desc: "Protect up to 10 devices simultaneously — Windows, Mac, iOS, Android, and more.",
-  },
-];
-
-const stats = [
-  { value: "10K+", label: "Global Servers" },
-  { value: "100+", label: "Countries" },
-  { value: "50M+", label: "Happy Users" },
-  { value: "99.9%", label: "Uptime" },
-];
-
-const testimonials = [
-  {
-    name: "Sarah Chen",
-    role: "Cybersecurity Engineer",
-    avatar: "SC",
-    text: "RainbowVPN is by far the most reliable VPN I've used. The speeds are incredible and the security features are top-notch.",
-    rating: 5,
-  },
-  {
-    name: "Marcus Thompson",
-    role: "Digital Nomad",
-    avatar: "MT",
-    text: "I travel constantly and RainbowVPN ensures I can access content from home no matter where I am. Absolute lifesaver.",
-    rating: 5,
-  },
-  {
-    name: "Priya Patel",
-    role: "Privacy Advocate",
-    avatar: "PP",
-    text: "The no-log policy and transparency reports give me complete confidence. This is the VPN I recommend to everyone.",
-    rating: 5,
-  },
-];
+import { useLanguage } from "./components/LanguageContext";
+import { translations } from "./translations";
 
 export default function Home() {
   const [activeTestimonial, setActiveTestimonial] = useState(0);
+  const { lang } = useLanguage();
+  const t = translations.home[lang];
+
+  const features = [
+    {
+      icon: "🔒",
+      title: t.feature1Title,
+      desc: t.feature1Desc,
+    },
+    {
+      icon: "⚡",
+      title: t.feature2Title,
+      desc: t.feature2Desc,
+    },
+    {
+      icon: "🌍",
+      title: t.feature3Title,
+      desc: t.feature3Desc,
+    },
+    {
+      icon: "🛡️",
+      title: t.feature4Title,
+      desc: t.feature4Desc,
+    },
+    {
+      icon: "🔌",
+      title: t.feature5Title,
+      desc: t.feature5Desc,
+    },
+    {
+      icon: "📱",
+      title: t.feature6Title,
+      desc: t.feature6Desc,
+    },
+  ];
+
+  const stats = [
+    { value: "10K+", label: t.globalServers },
+    { value: "100+", label: t.countries },
+    { value: "50M+", label: t.happyUsers },
+    { value: "99.9%", label: t.uptime },
+  ];
+
+  const testimonials = [
+    {
+      name: lang === "zh" ? "陈思雨" : "Sarah Chen",
+      role: lang === "zh" ? "网络安全工程师" : "Cybersecurity Engineer",
+      avatar: "SC",
+      text:
+        lang === "zh"
+          ? "RainbowVPN 是我用过的最可靠的 VPN。速度惊人，安全功能无可挑剔。"
+          : "RainbowVPN is by far the most reliable VPN I've used. The speeds are incredible and the security features are top-notch.",
+      rating: 5,
+    },
+    {
+      name: lang === "zh" ? "马库斯" : "Marcus Thompson",
+      role: lang === "zh" ? "数字游民" : "Digital Nomad",
+      avatar: "MT",
+      text:
+        lang === "zh"
+          ? "我经常出差旅行，无论身在何处，RainbowVPN 都能确保我随时访问国内内容。简直是救星。"
+          : "I travel constantly and RainbowVPN ensures I can access content from home no matter where I am. Absolute lifesaver.",
+      rating: 5,
+    },
+    {
+      name: lang === "zh" ? "普里亚" : "Priya Patel",
+      role: lang === "zh" ? "隐私倡导者" : "Privacy Advocate",
+      avatar: "PP",
+      text:
+        lang === "zh"
+          ? "无日志政策和透明度报告让我充满信心。这是我向所有人推荐的 VPN。"
+          : "The no-log policy and transparency reports give me complete confidence. This is the VPN I recommend to everyone.",
+      rating: 5,
+    },
+  ];
+
+  const steps = [
+    {
+      step: "01",
+      icon: "⬇️",
+      title: t.step1Title,
+      desc: t.step1Desc,
+    },
+    {
+      step: "02",
+      icon: "🔗",
+      title: t.step2Title,
+      desc: t.step2Desc,
+    },
+    {
+      step: "03",
+      icon: "🌐",
+      title: t.step3Title,
+      desc: t.step3Desc,
+    },
+  ];
 
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveTestimonial((prev) => (prev + 1) % testimonials.length);
     }, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [testimonials.length]);
 
   return (
     <div style={{ background: "var(--bg-primary)", minHeight: "100vh" }}>
@@ -132,7 +166,7 @@ export default function Home() {
           <div className="flex justify-center mb-6">
             <div className="section-label">
               <span className="animate-pulse-glow">🔐</span>
-              World&apos;s Most Trusted VPN — 50M+ Users
+              {t.heroBadge}
             </div>
           </div>
 
@@ -141,9 +175,9 @@ export default function Home() {
             className="text-5xl md:text-7xl font-black leading-tight mb-6"
             style={{ fontFamily: "var(--font-outfit)", letterSpacing: "-0.02em" }}
           >
-            <span style={{ color: "var(--text-primary)" }}>Browse the Web</span>
+            <span style={{ color: "var(--text-primary)" }}>{t.heroTitle1}</span>
             <br />
-            <span className="gradient-text">Freely & Safely</span>
+            <span className="gradient-text">{t.heroTitle2}</span>
           </h1>
 
           {/* Sub */}
@@ -155,35 +189,43 @@ export default function Home() {
               lineHeight: 1.7,
             }}
           >
-            Military-grade encryption. Zero logs. Lightning-fast speeds.
+            {t.heroSub1}
             <br />
             <strong style={{ color: "var(--text-primary)" }}>
-              Connect to 10,000+ servers in 100+ countries.
+              {t.heroSub2}
             </strong>
           </p>
 
           {/* CTA buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-            <Link href="/download" className="btn-primary" id="hero-download-btn" style={{ fontSize: "1.05rem", padding: "16px 40px" }}>
-              <span>⬇️ Download Free</span>
+            <Link
+              href="/download"
+              className="btn-primary"
+              id="hero-download-btn"
+              style={{ fontSize: "1.05rem", padding: "16px 40px" }}
+            >
+              <span>{t.downloadFree}</span>
             </Link>
-            <Link href="/pricing" className="btn-secondary" id="hero-pricing-btn" style={{ fontSize: "1.05rem", padding: "16px 40px" }}>
-              <span>View Plans</span>
+            <Link
+              href="/pricing"
+              className="btn-secondary"
+              id="hero-pricing-btn"
+              style={{ fontSize: "1.05rem", padding: "16px 40px" }}
+            >
+              <span>{t.viewPlans}</span>
             </Link>
           </div>
 
           {/* Trust badges */}
           <div className="flex flex-wrap justify-center gap-6">
-            {["✅ 30-Day Money Back", "✅ No Credit Card Required", "✅ Cancel Anytime"].map(
-              (badge) => (
-                <span
-                  key={badge}
-                  style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}
-                >
-                  {badge}
-                </span>
-              )
-            )}
+            {[t.badge1, t.badge2, t.badge3].map((badge) => (
+              <span
+                key={badge}
+                style={{ color: "var(--text-secondary)", fontSize: "0.9rem" }}
+              >
+                {badge}
+              </span>
+            ))}
           </div>
 
           {/* Shield logo floating */}
@@ -231,16 +273,16 @@ export default function Home() {
 
       {/* ===== FEATURES SECTION ===== */}
       <section id="features" className="py-24">
-        <div className="container ">
-          <div className="text-center mb-16 ">
-            <div className="section-label inline-flex">⚙️ Features</div>
+        <div className="container">
+          <div className="text-center mb-16">
+            <div className="section-label inline-flex">{t.featuresLabel}</div>
             <h2
               className="text-4xl md:text-5xl font-black"
               style={{ fontFamily: "var(--font-outfit)" }}
             >
-              Everything You Need to
+              {t.featuresTitle1}
               <br />
-              <span className="gradient-text">Stay Protected</span>
+              <span className="gradient-text">{t.featuresTitle2}</span>
             </h2>
             <div className="divider mt-4" />
           </div>
@@ -267,24 +309,23 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section >
+      </section>
 
       {/* ===== HOW IT WORKS SECTION ===== */}
-      < section
+      <section
         id="how-it-works"
         className="py-24"
-        style={{ background: "rgba(255,255,255,0.02)" }
-        }
+        style={{ background: "rgba(255,255,255,0.02)" }}
       >
         <div className="container">
           <div className="text-center mb-16">
-            <div className="section-label inline-flex">🚀 How It Works</div>
+            <div className="section-label inline-flex">{t.howLabel}</div>
             <h2
               className="text-4xl md:text-5xl font-black"
               style={{ fontFamily: "var(--font-outfit)" }}
             >
-              Get Protected in
-              <span className="gradient-text"> 3 Simple Steps</span>
+              {t.howTitle1}
+              <span className="gradient-text"> {t.howTitle2}</span>
             </h2>
             <div className="divider mt-4" />
           </div>
@@ -296,26 +337,7 @@ export default function Home() {
               style={{ background: "linear-gradient(90deg, transparent, rgba(0,212,255,0.4), transparent)" }}
             />
 
-            {[
-              {
-                step: "01",
-                icon: "⬇️",
-                title: "Download RainbowVPN",
-                desc: "Install RainbowVPN on your device in seconds. Available for all platforms.",
-              },
-              {
-                step: "02",
-                icon: "🔗",
-                title: "Connect to a Server",
-                desc: "Choose from 10,000+ servers in 100+ countries with a single click.",
-              },
-              {
-                step: "03",
-                icon: "🌐",
-                title: "Browse Freely",
-                desc: "Enjoy unlimited, private, and secure internet with full anonymity.",
-              },
-            ].map((item, i) => (
+            {steps.map((item, i) => (
               <div key={item.step} className="text-center relative" id={`step-${i + 1}`}>
                 <div
                   className="w-20 h-20 rounded-full flex items-center justify-center text-3xl mx-auto mb-6 relative z-10"
@@ -346,26 +368,27 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section >
+      </section>
 
       {/* ===== TESTIMONIALS ===== */}
-      < section id="testimonials" className="py-24" >
+      <section id="testimonials" className="py-24">
         <div className="container">
           <div className="text-center mb-16">
-            <div className="section-label inline-flex">⭐ Testimonials</div>
+            <div className="section-label inline-flex">{t.testimonialsLabel}</div>
             <h2
               className="text-4xl md:text-5xl font-black"
               style={{ fontFamily: "var(--font-outfit)" }}
             >
-              Loved by <span className="gradient-text">Millions</span>
+              {t.testimonialsTitle}{" "}
+              <span className="gradient-text">{t.testimonialsHighlight}</span>
             </h2>
             <div className="divider mt-4" />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
+            {testimonials.map((item, i) => (
               <div
-                key={t.name}
+                key={item.name}
                 className="glass-card p-8 transition-all duration-300"
                 id={`testimonial-${i}`}
                 style={{
@@ -382,31 +405,33 @@ export default function Home() {
               >
                 {/* Stars */}
                 <div className="flex gap-1 mb-4">
-                  {Array(t.rating)
+                  {Array(item.rating)
                     .fill(0)
                     .map((_, j) => (
-                      <span key={j} style={{ color: "#f59e0b" }}>★</span>
+                      <span key={j} style={{ color: "#f59e0b" }}>
+                        ★
+                      </span>
                     ))}
                 </div>
                 <p
                   className="mb-6 leading-relaxed"
                   style={{ color: "var(--text-secondary)", fontStyle: "italic" }}
                 >
-                  &ldquo;{t.text}&rdquo;
+                  &ldquo;{item.text}&rdquo;
                 </p>
                 <div className="flex items-center gap-3">
                   <div
                     className="w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold text-white"
                     style={{ background: "linear-gradient(135deg, #00d4ff, #8b5cf6)" }}
                   >
-                    {t.avatar}
+                    {item.avatar}
                   </div>
                   <div>
                     <div className="font-semibold" style={{ color: "var(--text-primary)" }}>
-                      {t.name}
+                      {item.name}
                     </div>
                     <div className="text-sm" style={{ color: "var(--text-secondary)" }}>
-                      {t.role}
+                      {item.role}
                     </div>
                   </div>
                 </div>
@@ -436,10 +461,10 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section >
+      </section>
 
       {/* ===== CTA BANNER ===== */}
-      < section
+      <section
         id="cta-banner"
         className="py-24"
         style={{ background: "rgba(255,255,255,0.02)" }}
@@ -468,30 +493,40 @@ export default function Home() {
                 className="text-4xl md:text-5xl font-black mb-4"
                 style={{ fontFamily: "var(--font-outfit)" }}
               >
-                Start Protecting Your
+                {t.ctaTitle1}
                 <br />
-                <span className="gradient-text">Privacy Today</span>
+                <span className="gradient-text">{t.ctaTitle2}</span>
               </h2>
               <p
                 className="text-lg mb-8 mx-auto"
                 style={{ color: "var(--text-secondary)", maxWidth: "500px" }}
               >
-                Join 50 million+ people who trust RainbowVPN for their online security. No commitment required.
+                {t.ctaSub}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link href="/download" className="btn-primary" id="cta-download-btn" style={{ fontSize: "1.05rem", padding: "16px 40px" }}>
-                  <span>⬇️ Get RainbowVPN Free</span>
+                <Link
+                  href="/download"
+                  className="btn-primary"
+                  id="cta-download-btn"
+                  style={{ fontSize: "1.05rem", padding: "16px 40px" }}
+                >
+                  <span>{t.ctaBtn1}</span>
                 </Link>
-                <Link href="/pricing" className="btn-secondary" id="cta-pricing-btn" style={{ fontSize: "1.05rem", padding: "16px 40px" }}>
-                  <span>See All Plans</span>
+                <Link
+                  href="/pricing"
+                  className="btn-secondary"
+                  id="cta-pricing-btn"
+                  style={{ fontSize: "1.05rem", padding: "16px 40px" }}
+                >
+                  <span>{t.ctaBtn2}</span>
                 </Link>
               </div>
             </div>
           </div>
         </div>
-      </section >
+      </section>
 
       <Footer />
-    </div >
+    </div>
   );
 }

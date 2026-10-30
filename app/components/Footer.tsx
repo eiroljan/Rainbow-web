@@ -1,35 +1,51 @@
 "use client";
 import Link from "next/link";
+import { useLanguage } from "./LanguageContext";
+import { translations } from "../translations";
 
 export default function Footer() {
   const currentYear = 2026;
+  const { lang } = useLanguage();
+  const t = translations.footer[lang];
 
-  const footerLinks = {
-    Product: [
-      { label: "Features", href: "/" },
-      { label: "Pricing", href: "/pricing" },
-      { label: "Download", href: "/download" },
-      { label: "Changelog", href: "/" },
-    ],
-    Company: [
-      { label: "About Us", href: "/about" },
-      { label: "Blog", href: "/" },
-      { label: "Careers", href: "/" },
-      { label: "Press Kit", href: "/" },
-    ],
-    Support: [
-      { label: "Help Center", href: "/" },
-      { label: "Contact Us", href: "/" },
-      { label: "Status", href: "/" },
-      { label: "Community", href: "/" },
-    ],
-    Legal: [
-      { label: "Privacy Policy", href: "/" },
-      { label: "Terms of Service", href: "/" },
-      { label: "Cookie Policy", href: "/" },
-      { label: "DMCA", href: "/" },
-    ],
-  };
+  const footerCategories = [
+    {
+      title: t.product,
+      links: [
+        { label: t.features, href: "/" },
+        { label: t.pricing, href: "/pricing" },
+        { label: t.download, href: "/download" },
+        { label: t.changelog, href: "/" },
+      ],
+    },
+    {
+      title: t.company,
+      links: [
+        { label: t.aboutUs, href: "/about" },
+        { label: t.blog, href: "/" },
+        { label: t.careers, href: "/" },
+        { label: t.pressKit, href: "/" },
+      ],
+    },
+    {
+      title: t.support,
+      links: [
+        { label: t.helpCenter, href: "/" },
+        { label: t.contactUs, href: "/" },
+        { label: t.status, href: "/" },
+        { label: t.community, href: "/" },
+      ],
+    },
+    {
+      title: t.legal,
+      links: [
+        { label: t.privacyPolicy, href: "/" },
+        { label: t.termsOfService, href: "/" },
+        { label: t.cookiePolicy, href: "/" },
+        { label: t.dmca, href: "/" },
+      ],
+    },
+  ];
 
   return (
     <footer
@@ -45,20 +61,36 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-12 mb-16 md:grid-cols-5">
           {/* Brand */}
           <div className="md:col-span-2">
-            <Link href="/" className="flex items-center gap-3 no-underline mb-6 inline-flex" id="footer-logo">
+            <Link
+              href="/"
+              className="flex items-center gap-3 no-underline mb-6 inline-flex"
+              id="footer-logo"
+            >
               <div
                 className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-black text-xl"
-                style={{ background: "linear-gradient(135deg, #00d4ff, #8b5cf6)" }}
+                style={{
+                  background: "linear-gradient(135deg, #00d4ff, #8b5cf6)",
+                }}
               >
                 R
               </div>
-              <span className="text-2xl font-black tracking-tight" style={{ fontFamily: "var(--font-outfit)" }}>
+              <span
+                className="text-2xl font-black tracking-tight"
+                style={{ fontFamily: "var(--font-outfit)" }}
+              >
                 <span className="gradient-text">Rainbow</span>
                 <span style={{ color: "#f0f4ff" }}>VPN</span>
               </span>
             </Link>
-            <p style={{ color: "var(--text-secondary)", lineHeight: 1.8, maxWidth: "320px", fontSize: "0.95rem" }}>
-              Protecting your digital life with military-grade encryption and blazing-fast speeds across 100+ countries.
+            <p
+              style={{
+                color: "var(--text-secondary)",
+                lineHeight: 1.8,
+                maxWidth: "320px",
+                fontSize: "0.95rem",
+              }}
+            >
+              {t.description}
             </p>
 
             {/* Social icons */}
@@ -81,14 +113,20 @@ export default function Footer() {
                     color: "var(--text-secondary)",
                   }}
                   onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "rgba(0,212,255,0.15)";
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(0,212,255,0.4)";
-                    (e.currentTarget as HTMLElement).style.color = "var(--accent-cyan)";
+                    (e.currentTarget as HTMLElement).style.background =
+                      "rgba(0,212,255,0.15)";
+                    (e.currentTarget as HTMLElement).style.borderColor =
+                      "rgba(0,212,255,0.4)";
+                    (e.currentTarget as HTMLElement).style.color =
+                      "var(--accent-cyan)";
                   }}
                   onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.06)";
-                    (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.1)";
-                    (e.currentTarget as HTMLElement).style.color = "var(--text-secondary)";
+                    (e.currentTarget as HTMLElement).style.background =
+                      "rgba(255,255,255,0.06)";
+                    (e.currentTarget as HTMLElement).style.borderColor =
+                      "rgba(255,255,255,0.1)";
+                    (e.currentTarget as HTMLElement).style.color =
+                      "var(--text-secondary)";
                   }}
                 >
                   {social.icon}
@@ -98,16 +136,16 @@ export default function Footer() {
           </div>
 
           {/* Links */}
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category}>
+          {footerCategories.map((col) => (
+            <div key={col.title}>
               <h3
                 className="font-semibold mb-5 text-sm uppercase tracking-widest"
                 style={{ color: "var(--text-primary)" }}
               >
-                {category}
+                {col.title}
               </h3>
               <ul className="flex flex-col gap-3">
-                {links.map((link) => (
+                {col.links.map((link) => (
                   <li key={link.label}>
                     <Link href={link.href} className="footer-link">
                       {link.label}
@@ -125,15 +163,17 @@ export default function Footer() {
           style={{ borderTop: "1px solid rgba(255,255,255,0.06)" }}
         >
           <p style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
-            © {currentYear} RainbowVPN. All rights reserved.
+            © {currentYear} RainbowVPN. {t.allRightsReserved}
           </p>
           <div className="flex items-center gap-2">
             <div
               className="w-2 h-2 rounded-full animate-pulse-glow"
               style={{ background: "#22c55e" }}
             />
-            <span style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}>
-              All systems operational
+            <span
+              style={{ color: "var(--text-secondary)", fontSize: "0.875rem" }}
+            >
+              {t.allSystemsOperational}
             </span>
           </div>
         </div>

@@ -3,6 +3,8 @@ import { useState } from "react";
 import Link from "next/link";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { useLanguage } from "../components/LanguageContext";
+import { translations } from "../translations";
 
 const platforms = [
   {
@@ -12,7 +14,6 @@ const platforms = [
     version: "v4.2.1",
     size: "45 MB",
     requirements: "Windows 10 / 11",
-    href: "#",
     color: "rgba(0,212,255,0.06)",
     border: "rgba(0,212,255,0.2)",
   },
@@ -23,7 +24,6 @@ const platforms = [
     version: "v4.2.1",
     size: "38 MB",
     requirements: "macOS 12 Monterey+",
-    href: "#",
     color: "rgba(139,92,246,0.06)",
     border: "rgba(139,92,246,0.2)",
   },
@@ -34,7 +34,6 @@ const platforms = [
     version: "v4.2.1",
     size: "22 MB",
     requirements: "Ubuntu 20.04+ / Debian",
-    href: "#",
     color: "rgba(236,72,153,0.06)",
     border: "rgba(236,72,153,0.2)",
   },
@@ -45,7 +44,6 @@ const platforms = [
     version: "v4.2.1",
     size: "18 MB",
     requirements: "Android 8.0+",
-    href: "#",
     color: "rgba(34,197,94,0.06)",
     border: "rgba(34,197,94,0.2)",
   },
@@ -56,7 +54,6 @@ const platforms = [
     version: "v4.2.1",
     size: "24 MB",
     requirements: "iOS 15+",
-    href: "#",
     color: "rgba(251,191,36,0.06)",
     border: "rgba(251,191,36,0.2)",
   },
@@ -67,48 +64,81 @@ const platforms = [
     version: "v3.8.0",
     size: "Manual Setup",
     requirements: "DD-WRT / OpenWRT",
-    href: "#",
     color: "rgba(239,68,68,0.06)",
     border: "rgba(239,68,68,0.2)",
   },
 ];
 
-const steps = [
-  {
-    step: "1",
-    title: "Download & Install",
-    desc: "Choose your platform and download the RainbowVPN installer. Installation takes less than 60 seconds.",
-    icon: "⬇️",
-  },
-  {
-    step: "2",
-    title: "Create Your Account",
-    desc: "Sign up for free — no credit card required. Already have an account? Just log in.",
-    icon: "👤",
-  },
-  {
-    step: "3",
-    title: "Connect & Browse",
-    desc: "Hit the power button, choose your server, and browse freely with complete privacy.",
-    icon: "🔒",
-  },
-];
-
 const systemRequirements = [
-  { platform: "Windows", reqs: ["Windows 10 or later (64-bit)", "2GB RAM minimum", "100MB free disk space", ".NET Framework 4.8+"] },
-  { platform: "macOS", reqs: ["macOS 12 Monterey or later", "Apple Silicon or Intel Mac", "50MB free disk space", "System Extension permissions"] },
-  { platform: "Linux", reqs: ["Ubuntu 20.04+, Debian 10+", "64-bit processor", "50MB free disk space", "OpenSSL 1.1+"] },
-  { platform: "Android", reqs: ["Android 8.0 (Oreo) or later", "ARM or x86 processor", "30MB free storage", "Internet permission required"] },
+  {
+    platform: "Windows",
+    reqs: [
+      "Windows 10 or later (64-bit)",
+      "2GB RAM minimum",
+      "100MB free disk space",
+      ".NET Framework 4.8+",
+    ],
+  },
+  {
+    platform: "macOS",
+    reqs: [
+      "macOS 12 Monterey or later",
+      "Apple Silicon or Intel Mac",
+      "50MB free disk space",
+      "System Extension permissions",
+    ],
+  },
+  {
+    platform: "Linux",
+    reqs: [
+      "Ubuntu 20.04+, Debian 10+",
+      "64-bit processor",
+      "50MB free disk space",
+      "OpenSSL 1.1+",
+    ],
+  },
+  {
+    platform: "Android",
+    reqs: [
+      "Android 8.0 (Oreo) or later",
+      "ARM or x86 processor",
+      "30MB free storage",
+      "Internet permission required",
+    ],
+  },
 ];
 
 export default function DownloadPage() {
   const [selectedPlatform, setSelectedPlatform] = useState("windows");
   const [downloading, setDownloading] = useState<string | null>(null);
+  const { lang } = useLanguage();
+  const t = translations.download[lang];
 
-  const handleDownload = (platformId: string) => {
-    setDownloading(platformId);
+  const handleDownload = (id: string) => {
+    setDownloading(id);
     setTimeout(() => setDownloading(null), 2000);
   };
+
+  const steps = [
+    {
+      step: "1",
+      title: t.step1Title,
+      desc: t.step1Desc,
+      icon: "⬇️",
+    },
+    {
+      step: "2",
+      title: t.step2Title,
+      desc: t.step2Desc,
+      icon: "👤",
+    },
+    {
+      step: "3",
+      title: t.step3Title,
+      desc: t.step3Desc,
+      icon: "🔒",
+    },
+  ];
 
   return (
     <div style={{ background: "var(--bg-primary)", minHeight: "100vh" }}>
@@ -124,45 +154,81 @@ export default function DownloadPage() {
         <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] opacity-25"
           style={{
-            background: "radial-gradient(ellipse, rgba(0,212,255,0.5) 0%, rgba(139,92,246,0.3) 50%, transparent 80%)",
+            background:
+              "radial-gradient(ellipse, rgba(0,212,255,0.5) 0%, rgba(139,92,246,0.3) 50%, transparent 80%)",
             filter: "blur(60px)",
           }}
         />
 
         <div className="container relative z-10">
-          <div className="section-label inline-flex mb-4">⬇️ Download</div>
+          <div className="section-label inline-flex mb-4">{t.heroLabel}</div>
+
           <h1
             className="text-5xl md:text-7xl font-black mb-6"
-            style={{ fontFamily: "var(--font-outfit)", letterSpacing: "-0.02em" }}
+            style={{
+              fontFamily: "var(--font-outfit)",
+              letterSpacing: "-0.02em",
+            }}
           >
-            Get RainbowVPN on
+            {t.heroTitle}
             <br />
-            <span className="gradient-text">Any Device</span>
+            <span className="gradient-text">{t.heroSubtitle}</span>
           </h1>
           <p
             className="text-xl mb-10 mx-auto"
-            style={{ color: "var(--text-secondary)", maxWidth: "520px", lineHeight: 1.8 }}
+            style={{
+              color: "var(--text-secondary)",
+              maxWidth: "520px",
+              lineHeight: 1.8,
+            }}
           >
-            Available on all major platforms. One account protects up to 10 devices simultaneously.
+            {t.heroDesc}
           </p>
 
           {/* Rating badges */}
           <div className="flex flex-wrap justify-center gap-6 mb-8">
             {[
-              { store: "App Store", rating: "4.9 ★", count: "200K+ reviews" },
-              { store: "Google Play", rating: "4.8 ★", count: "500K+ reviews" },
-              { store: "Trustpilot", rating: "4.9 ★", count: "50K+ reviews" },
+              {
+                store: "App Store",
+                rating: "4.9 ★",
+                count: lang === "zh" ? "20万+ 条评价" : "200K+ reviews",
+              },
+              {
+                store: "Google Play",
+                rating: "4.8 ★",
+                count: lang === "zh" ? "50万+ 条评价" : "500K+ reviews",
+              },
+              {
+                store: "Trustpilot",
+                rating: "4.9 ★",
+                count: lang === "zh" ? "5万+ 条评价" : "50K+ reviews",
+              },
             ].map((r) => (
               <div
                 key={r.store}
                 className="glass-card px-5 py-3 flex items-center gap-3"
-                id={`rating-${r.store.toLowerCase().replace(/\s/g,'')}`}
+                id={`rating-${r.store.toLowerCase().replace(/\s/g, "")}`}
               >
                 <div>
-                  <div className="font-bold text-sm" style={{ color: "var(--text-primary)" }}>{r.store}</div>
-                  <div className="text-xs" style={{ color: "var(--text-secondary)" }}>{r.count}</div>
+                  <div
+                    className="font-bold text-sm"
+                    style={{ color: "var(--text-primary)" }}
+                  >
+                    {r.store}
+                  </div>
+                  <div
+                    className="text-xs"
+                    style={{ color: "var(--text-secondary)" }}
+                  >
+                    {r.count}
+                  </div>
                 </div>
-                <div className="text-lg font-black" style={{ color: "#f59e0b" }}>{r.rating}</div>
+                <div
+                  className="text-lg font-black"
+                  style={{ color: "#f59e0b" }}
+                >
+                  {r.rating}
+                </div>
               </div>
             ))}
           </div>
@@ -180,11 +246,9 @@ export default function DownloadPage() {
                 id={`platform-${platform.id}`}
                 style={{
                   background: platform.color,
-                  borderColor: platform.border,
                   border: `1px solid ${platform.border}`,
                 }}
               >
-                {/* Icon */}
                 <div className="text-5xl mb-4">{platform.icon}</div>
 
                 {/* Info */}
@@ -194,10 +258,16 @@ export default function DownloadPage() {
                 >
                   {platform.name}
                 </h2>
-                <p className="text-sm mb-1" style={{ color: "var(--text-secondary)" }}>
+                <p
+                  className="text-sm mb-1"
+                  style={{ color: "var(--text-secondary)" }}
+                >
                   {platform.requirements}
                 </p>
-                <p className="text-xs mb-6" style={{ color: "var(--text-secondary)", opacity: 0.6 }}>
+                <p
+                  className="text-xs mb-6"
+                  style={{ color: "var(--text-secondary)", opacity: 0.6 }}
+                >
                   {platform.version} · {platform.size}
                 </p>
 
@@ -212,10 +282,10 @@ export default function DownloadPage() {
                     {downloading === platform.id ? (
                       <span className="flex items-center gap-2">
                         <span className="inline-block w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                        Downloading...
+                        {t.downloading}
                       </span>
                     ) : (
-                      `⬇️ Download for ${platform.name}`
+                      `${t.downloadFor} ${platform.name}`
                     )}
                   </span>
                 </button>
@@ -224,9 +294,14 @@ export default function DownloadPage() {
           </div>
 
           {/* Note */}
-          <p className="text-center mt-8 text-sm" style={{ color: "var(--text-secondary)" }}>
-            🔒 All downloads are verified and digitally signed. &nbsp;
-            <a href="#" style={{ color: "var(--accent-cyan)" }}>Verify checksums →</a>
+          <p
+            className="text-center mt-8 text-sm"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            {t.verifyNote} &nbsp;
+            <a href="#" style={{ color: "var(--accent-cyan)" }}>
+              {t.verifyLink}
+            </a>
           </p>
         </div>
       </section>
@@ -239,13 +314,13 @@ export default function DownloadPage() {
       >
         <div className="container">
           <div className="text-center mb-16">
-            <div className="section-label inline-flex mb-4">🚀 Setup Guide</div>
+            <div className="section-label inline-flex mb-4">{t.setupLabel}</div>
             <h2
               className="text-4xl md:text-5xl font-black"
               style={{ fontFamily: "var(--font-outfit)" }}
             >
-              Up and Running in
-              <span className="gradient-text"> Under 2 Minutes</span>
+              {t.setupTitle1}
+              <span className="gradient-text"> {t.setupTitle2}</span>
             </h2>
             <div className="divider mt-4" />
           </div>
@@ -261,7 +336,10 @@ export default function DownloadPage() {
                 {i < steps.length - 1 && (
                   <div
                     className="hidden md:block absolute top-10 left-full w-full h-px -translate-x-1/2"
-                    style={{ background: "linear-gradient(90deg, rgba(0,212,255,0.4), transparent)" }}
+                    style={{
+                      background:
+                        "linear-gradient(90deg, rgba(0,212,255,0.4), transparent)",
+                    }}
                   />
                 )}
 
@@ -281,7 +359,10 @@ export default function DownloadPage() {
                 >
                   STEP {step.step}
                 </div>
-                <h3 className="text-xl font-bold mb-3" style={{ color: "var(--text-primary)" }}>
+                <h3
+                  className="text-xl font-bold mb-3"
+                  style={{ color: "var(--text-primary)" }}
+                >
                   {step.title}
                 </h3>
                 <p style={{ color: "var(--text-secondary)", lineHeight: 1.7 }}>
@@ -297,12 +378,13 @@ export default function DownloadPage() {
       <section id="system-requirements" className="py-24">
         <div className="container">
           <div className="text-center mb-16">
-            <div className="section-label inline-flex mb-4">💻 Requirements</div>
+            <div className="section-label inline-flex mb-4">{t.reqLabel}</div>
             <h2
               className="text-4xl font-black"
               style={{ fontFamily: "var(--font-outfit)" }}
             >
-              System <span className="gradient-text">Requirements</span>
+              {t.reqTitle}{" "}
+              <span className="gradient-text">{t.reqHighlight}</span>
             </h2>
             <div className="divider mt-4" />
           </div>
@@ -336,23 +418,32 @@ export default function DownloadPage() {
           {systemRequirements
             .filter((s) => s.platform.toLowerCase() === selectedPlatform)
             .map((s) => (
-              <div key={s.platform} className="max-w-lg mx-auto glass-card p-8" id={`req-content-${s.platform.toLowerCase()}`}>
+              <div
+                key={s.platform}
+                className="max-w-lg mx-auto glass-card p-8"
+                id={`req-content-${s.platform.toLowerCase()}`}
+              >
                 <h3
                   className="text-xl font-bold mb-6"
                   style={{ color: "var(--text-primary)" }}
                 >
-                  {s.platform} Requirements
+                  {s.platform} {t.reqHighlight}
                 </h3>
                 <ul className="flex flex-col gap-4">
                   {s.reqs.map((req) => (
                     <li key={req} className="flex items-center gap-3">
                       <span
                         className="w-5 h-5 rounded-full flex items-center justify-center text-xs flex-shrink-0"
-                        style={{ background: "rgba(0,212,255,0.15)", color: "var(--accent-cyan)" }}
+                        style={{
+                          background: "rgba(0,212,255,0.15)",
+                          color: "var(--accent-cyan)",
+                        }}
                       >
                         ✓
                       </span>
-                      <span style={{ color: "var(--text-secondary)" }}>{req}</span>
+                      <span style={{ color: "var(--text-secondary)" }}>
+                        {req}
+                      </span>
                     </li>
                   ))}
                 </ul>
@@ -369,23 +460,45 @@ export default function DownloadPage() {
       >
         <div className="container">
           <div className="text-center mb-12">
-            <div className="section-label inline-flex mb-4">🌐 Browser Extensions</div>
+            <div className="section-label inline-flex mb-4">
+              {t.browserLabel}
+            </div>
             <h2
               className="text-4xl font-black"
               style={{ fontFamily: "var(--font-outfit)" }}
             >
-              Also Available as
-              <span className="gradient-text"> Browser Extensions</span>
+              {t.browserTitle1}
+              <span className="gradient-text"> {t.browserTitle2}</span>
             </h2>
             <div className="divider mt-4" />
           </div>
 
           <div className="flex flex-wrap justify-center gap-6">
             {[
-              { name: "Chrome", icon: "🟡", color: "rgba(251,191,36,0.1)", border: "rgba(251,191,36,0.3)" },
-              { name: "Firefox", icon: "🦊", color: "rgba(249,115,22,0.1)", border: "rgba(249,115,22,0.3)" },
-              { name: "Edge", icon: "🔵", color: "rgba(59,130,246,0.1)", border: "rgba(59,130,246,0.3)" },
-              { name: "Safari", icon: "🧭", color: "rgba(34,197,94,0.1)", border: "rgba(34,197,94,0.3)" },
+              {
+                name: "Chrome",
+                icon: "🟡",
+                color: "rgba(251,191,36,0.1)",
+                border: "rgba(251,191,36,0.3)",
+              },
+              {
+                name: "Firefox",
+                icon: "🦊",
+                color: "rgba(249,115,22,0.1)",
+                border: "rgba(249,115,22,0.3)",
+              },
+              {
+                name: "Edge",
+                icon: "🔵",
+                color: "rgba(59,130,246,0.1)",
+                border: "rgba(59,130,246,0.3)",
+              },
+              {
+                name: "Safari",
+                icon: "🧭",
+                color: "rgba(34,197,94,0.1)",
+                border: "rgba(34,197,94,0.3)",
+              },
             ].map((ext) => (
               <a
                 key={ext.name}
@@ -399,15 +512,22 @@ export default function DownloadPage() {
                   minWidth: "140px",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(-6px)";
+                  (e.currentTarget as HTMLElement).style.transform =
+                    "translateY(-6px)";
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.transform = "translateY(0)";
+                  (e.currentTarget as HTMLElement).style.transform =
+                    "translateY(0)";
                 }}
               >
                 <span className="text-4xl">{ext.icon}</span>
                 <span className="font-semibold">{ext.name}</span>
-                <span className="text-xs" style={{ color: "var(--accent-cyan)" }}>Install Extension →</span>
+                <span
+                  className="text-xs"
+                  style={{ color: "var(--accent-cyan)" }}
+                >
+                  {t.installExtension}
+                </span>
               </a>
             ))}
           </div>
@@ -420,31 +540,54 @@ export default function DownloadPage() {
           <div
             className="rounded-3xl p-16 text-center relative overflow-hidden"
             style={{
-              background: "linear-gradient(135deg, rgba(0,212,255,0.08), rgba(139,92,246,0.08))",
+              background:
+                "linear-gradient(135deg, rgba(0,212,255,0.08), rgba(139,92,246,0.08))",
               border: "1px solid rgba(0,212,255,0.2)",
             }}
           >
             <div
               className="absolute -top-24 -left-24 w-64 h-64 rounded-full opacity-20"
-              style={{ background: "radial-gradient(circle, rgba(0,212,255,0.5), transparent)", filter: "blur(30px)" }}
+              style={{
+                background:
+                  "radial-gradient(circle, rgba(0,212,255,0.5), transparent)",
+                filter: "blur(30px)",
+              }}
             />
             <div className="relative z-10">
-              <div className="text-5xl mb-4">🚀</div>
+              <div className="text-5xl mb-4">{t.ctaEmoji}</div>
               <h2
                 className="text-4xl md:text-5xl font-black mb-4"
                 style={{ fontFamily: "var(--font-outfit)" }}
               >
-                Ready to Go <span className="gradient-text">Private?</span>
+                {t.ctaTitle}{" "}
+                <span className="gradient-text">{t.ctaHighlight}</span>
               </h2>
-              <p className="mb-8 text-lg" style={{ color: "var(--text-secondary)", maxWidth: "400px", margin: "0 auto 32px" }}>
-                Download RainbowVPN free today. No credit card. No commitment.
+              <p
+                className="mb-8 text-lg"
+                style={{
+                  color: "var(--text-secondary)",
+                  maxWidth: "400px",
+                  margin: "0 auto 32px",
+                }}
+              >
+                {t.ctaDesc}
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#platforms" className="btn-primary" id="cta-download-platform-btn" style={{ fontSize: "1.05rem", padding: "16px 40px" }}>
-                  <span>⬇️ Choose Your Platform</span>
+                <a
+                  href="#platforms"
+                  className="btn-primary"
+                  id="cta-download-platform-btn"
+                  style={{ fontSize: "1.05rem", padding: "16px 40px" }}
+                >
+                  <span>{t.ctaBtn}</span>
                 </a>
-                <Link href="/pricing" className="btn-secondary" id="cta-upgrade-btn" style={{ fontSize: "1.05rem", padding: "16px 40px" }}>
-                  <span>Upgrade to Pro</span>
+                <Link
+                  href="/pricing"
+                  className="btn-secondary"
+                  id="cta-upgrade-btn"
+                  style={{ fontSize: "1.05rem", padding: "16px 40px" }}
+                >
+                  <span>{t.upgradeBtn}</span>
                 </Link>
               </div>
             </div>
